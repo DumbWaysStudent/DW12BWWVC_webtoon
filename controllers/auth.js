@@ -25,18 +25,18 @@ exports.login = (req, res) => {
   });
 };
 
-// exports.register = (req, res) => {
-//   const hashedPassword = bcrypt.hashSync(req.body.password, 8);
-//   User.create({
-//     email: req.body.email,
-//     password: hashedPassword
-//   }).then(user => {
-//     if (user) {
-//       const token = jwt.sign({ id: user.id }, "my-secret-key");
-//       res.send({
-//         status: "true",
-//         token
-//       });
-//     }
-//   });
-// };
+exports.register = (req, res) => {
+  const hashedPassword = bcrypt.hashSync(req.body.password, 8);
+  User.create({
+    email: req.body.email,
+    password: hashedPassword
+  }).then(user => {
+    if (user) {
+      const token = jwt.sign({ id: user.id }, "my-secret-key");
+      res.send({
+        status: "true",
+        token
+      });
+    }
+  });
+};

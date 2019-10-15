@@ -24,7 +24,7 @@ app.group("/api/v1", router => {
   router.post("/login", AuthController.login);
 
   // register API
-  // router.post("/register", AuthController.register);
+  router.post("/register", AuthController.register);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port} !`));
