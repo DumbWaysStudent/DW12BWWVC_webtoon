@@ -53,24 +53,24 @@ exports.episode = (req, res) => {
   });
 };
 
-// exports.detailEpisode = (req, res) => {
-//   const toonsId = req.params.toon_id;
-//   const epsId = req.params.eps_id;
-//   console.log(toonsId, epsId);
+exports.detailEpisode = (req, res) => {
+  const toonsId = req.params.toon_id;
+  const epsId = req.params.eps_id;
+  console.log(toonsId, epsId);
 
-//   Pages.findAll({
-//     include: [
-//       {
-//         model: Episodes,
-//         as: "myEpisode",
-//         where: { webtoonsId: toonsId, id: epsId },
-//         attributes: []
-//       }
-//     ],
-//     attributes: {
-//       exclude: ["id", "episodesId"]
-//     }
-//   }).then(data => {
-//     res.send(data);
-//   });
-// };
+  Pages.findAll({
+    include: [
+      {
+        model: Episodes,
+        as: "myEpisode",
+        where: { webtoonsId: toonsId, id: epsId },
+        attributes: []
+      }
+    ],
+    attributes: {
+      exclude: ["id", "episodesId"]
+    }
+  }).then(data => {
+    res.send(data);
+  });
+};
