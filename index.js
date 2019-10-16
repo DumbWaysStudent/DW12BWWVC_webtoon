@@ -53,6 +53,13 @@ app.group("/api/v1", router => {
     authenticated,
     ToonsControllers.storeCreatedToons
   );
+
+  // Update Router -- my webtoon
+  router.put(
+    "/user/:user_id/webtoon/:toon_id",
+    authenticated,
+    ToonsControllers.updateMyToon
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port} !`));

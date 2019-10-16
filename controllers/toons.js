@@ -158,3 +158,24 @@ exports.showEpsCreatedUser = (req, res) => {
     res.send(data);
   });
 };
+
+exports.updateMyToon = (req, res) => {
+  const userId = req.params.user_id;
+  const toonId = req.params.toon_id;
+
+  Toons.update(
+    {
+      title: req.body.title,
+      genre: req.body.genre,
+      image: req.body.image
+    },
+    {
+      where: { createdBy: userId, id: toonId }
+    }
+  ).then(data => {
+    res.send({
+      error: true,
+      Message: "Try Again Later !"
+    });
+  });
+};
