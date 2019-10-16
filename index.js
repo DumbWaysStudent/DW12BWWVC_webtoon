@@ -18,7 +18,7 @@ const { authenticated } = require("./midleware");
 app.group("/api/v1", router => {
   // Home page route
   router.get("/", (req, res) => {
-    res.send("Hello Webtoon");
+    res.send("Hello ini adalah aplikasi Webtoon");
   });
 
   // register & Login API
@@ -59,6 +59,12 @@ app.group("/api/v1", router => {
     "/user/:user_id/webtoon/:toon_id",
     authenticated,
     ToonsControllers.updateMyToon
+  );
+
+  // Delete Router
+  router.delete(
+    "/user/:user_id/webtoon/:toon_id",
+    ToonsControllers.deleteMyToon
   );
 });
 

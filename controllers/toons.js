@@ -174,8 +174,24 @@ exports.updateMyToon = (req, res) => {
     }
   ).then(data => {
     res.send({
-      error: true,
-      Message: "Try Again Later !"
+      status: "succes",
+      Message: "Data Has been Updated"
     });
   });
+};
+
+exports.deleteMyToon = (req, res) => {
+  const userId = req.params.user_id;
+  const toonId = req.params.toon_id;
+  Toons.destroy({
+    where: { createdBy: userId, id: toonId }
+  })
+    .then(data => {
+      res.send({
+        delete: "succes"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
