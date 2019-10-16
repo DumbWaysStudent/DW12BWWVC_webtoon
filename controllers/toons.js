@@ -219,3 +219,31 @@ exports.createEpsToon = (req, res) => {
     });
   });
 };
+
+exports.showImgEPs = (req, res) => {
+  const userId = req.params.user_id;
+  const toonId = req.params.toon_id;
+  const epsId = req.params.eps_id;
+
+  Pages.findAll({
+    include: [
+      {
+        model: Episodes,
+        as: "myEpisode",
+        where: { webtoonsId: toonId, id: epsId },
+        attributes: [],
+        include: [
+          {
+            model: Toons,
+            as: "toonId",
+            where: { createdBy: userId, id: toonId },
+            attributes: []
+          }
+        ]
+      }
+    ],
+    attributes: ["image"]
+  }).then(data => {
+    res.send(data);
+  });
+};

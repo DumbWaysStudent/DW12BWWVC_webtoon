@@ -74,6 +74,19 @@ app.group("/api/v1", router => {
     authenticated,
     ToonsControllers.createEpsToon
   );
+
+  // get all images of an episode
+  router.get(
+    "/user/:user_id/webtoon/:toon_id/episode/:eps_id/images",
+    authenticated,
+    ToonsControllers.showImgEPs
+  );
+
+  // update my episode
+  // router.put(
+  //   "/user/:user_id/webtoon/:toon_id/episode/:eps_id",
+  //   ToonsControllers
+  // );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port} !`));
