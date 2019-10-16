@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   episodes.associate = function(models) {
     episodes.belongsTo(models.webtoons, {
-      as: "webtoons_id",
+      //as: "webtoonsID",
       foreignKey: "webtoonsId"
     });
   };

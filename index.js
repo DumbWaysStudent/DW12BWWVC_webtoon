@@ -28,6 +28,8 @@ app.group("/api/v1", router => {
   // other API goes here
   router.get("/webtoons", ToonsControllers.show);
   router.get("/webtoon/:id", ToonsControllers.showid);
+  router.get("/webtoon/:toon_id/episodes", ToonsControllers.episode);
+  router.get("/webtoon/:toon_id/episode/:eps_id",ToonsControllers.detailEpisode);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port} !`));

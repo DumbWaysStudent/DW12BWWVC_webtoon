@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   pages.associate = function(models) {
     pages.belongsTo(models.episodes, {
-      as: "episodes_id",
+      as: "myEpisode",
       foreignKey: "episodesId"
     });
   };
