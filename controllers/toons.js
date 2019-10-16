@@ -195,3 +195,27 @@ exports.deleteMyToon = (req, res) => {
       console.log(err);
     });
 };
+
+exports.createEpsToon = (req, res) => {
+  const userId = req.params.user_id;
+  const toonId = req.params.toon_id;
+
+  Episodes.findAll({
+    include: [
+      {
+        model: Toons,
+        as: "toonId",
+        where: { createdBy: userId, id: toonId },
+        attributes: []
+      }
+    ]
+  }).then(items => {
+    Episodes.create({
+      webtoonsId: toonId,
+      episode: req.body.episode,
+      image: req.body.image
+    }).then(data => {
+      res.send(data);
+    });
+  });
+};

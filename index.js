@@ -64,7 +64,15 @@ app.group("/api/v1", router => {
   // Delete Router
   router.delete(
     "/user/:user_id/webtoon/:toon_id",
+    authenticated,
     ToonsControllers.deleteMyToon
+  );
+
+  // POST create my episode
+  router.post(
+    "/user/:user_id/webtoon/:toon_id/episode",
+    authenticated,
+    ToonsControllers.createEpsToon
   );
 });
 
