@@ -247,3 +247,31 @@ exports.showImgEPs = (req, res) => {
     res.send(data);
   });
 };
+
+exports.updateMyEps = (req, res) => {
+  const userId = req.params.user_id;
+  const toonId = req.params.toon_id;
+  const epsId = req.params.eps_id;
+
+  Toons.findAll({
+    where: { createdBy: userId, id: toonId }
+  })
+    .then(data => {
+      Episodes.update(
+        {
+          episode: req.body.episode,
+          image: req.body.image
+        },
+        {
+          where: { webtoonsId: toonId, id: epsId }
+        }
+      ).then(data => {
+        res.send({
+          Message: "Update Succesfull !!"
+        });
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};

@@ -83,10 +83,11 @@ app.group("/api/v1", router => {
   );
 
   // update my episode
-  // router.put(
-  //   "/user/:user_id/webtoon/:toon_id/episode/:eps_id",
-  //   ToonsControllers
-  // );
+  router.put(
+    "/user/:user_id/webtoon/:toon_id/episode/:eps_id",
+    authenticated,
+    ToonsControllers.updateMyEps
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port} !`));
