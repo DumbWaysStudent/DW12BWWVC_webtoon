@@ -4,39 +4,79 @@ const User = models.user;
 const Episodes = models.episodes;
 const Pages = models.pages;
 
-exports.show = (req, res) => {
-  let query;
+// get all webtoons
+const getToons = data => {
+  const newData = data.map(item => {
+    let newItem = {
+      title: item.title,
+      genre: item.genre,
+      isFavorite: item.isFavorite,
+      image: item.image,
+      createdAt: item.createdAt,
+      updatedAt: item.createdAt,
+      createdBy: item.createdBy.id
+    };
+    return newItem;
+  });
+  return newData;
+};
 
-  if (req.query.title) {
-    query = Toons.findAll({
-      where: {
-        title: req.query.title
-      },
-      include: {
-        model: User,
-        as: "created_by"
-      }
-    });
-  } else if (req.params.id) {
-    query = Toons.findAll({
-      where: {
-        title: req.query.id
-      },
-      include: {
-        model: User,
-        as: "created_by"
-      }
-    });
-  } else {
-    query = Toons.findAll({
-      include: {
-        model: User,
-        as: "created_by"
-      }
-    });
-  }
-  console.log(query);
-  query.then(data => res.send(data));
+// get all webtoons favorite
+const getFavorite = data => {
+  const input = data.filter(item => item.isFavorite);
+
+  let newData = input.map(item => {
+    let newItem = {
+      title: item.title,
+      genre: item.genre,
+      isFavorite: item.isFavorite,
+      image: item.image,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt
+    };
+    return newItem;
+  });
+  return newData;
+};
+
+// get all toons by title
+// const getToonsByTitle = (data, title) => {
+//   const input = data.filter(item => {
+//     return item.title.toLowerCase().includes(title.toLowerCase());
+//   });
+//   let newData = input.map(item => {
+//     let newItem = {
+//       title: item.title,
+//       genre: item.genre,
+//       isFavorite: item.isFavorite,
+//       image: item.image,
+//       createdAt: item.createdAt,
+//       updatedAt: item.updatedAt,
+//       createdBy: item.createdBy.id
+//     };
+//     return newItem;
+//   });
+//   return newData;
+// };
+
+exports.show = (req, res) => {
+  Toons.findAll({
+    include: {
+      model: User,
+      as: "created_by"
+    }
+  }).then(data => {
+    let newData;
+
+    if (req.query.isFavorite == "true") {
+      newData = getFavorite(data);
+    } else if (req.query.title) {
+      newData = getToonsByTitle(data, req.query.title);
+    } else {
+      newData = getToons(data);
+    }
+    res.send(newData);
+  });
 };
 
 exports.showid = (req, res) => {
