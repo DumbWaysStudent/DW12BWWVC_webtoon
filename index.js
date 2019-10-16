@@ -88,6 +88,13 @@ app.group("/api/v1", router => {
     authenticated,
     ToonsControllers.updateMyEps
   );
+
+  // delete my episode
+  router.delete(
+    "/user/:user_id/webtoon/:toon_id/episode/:eps_id",
+    authenticated,
+    ToonsControllers.deleteMyEps
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port} !`));

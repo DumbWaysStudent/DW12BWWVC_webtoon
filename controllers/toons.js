@@ -275,3 +275,21 @@ exports.updateMyEps = (req, res) => {
       console.log(err);
     });
 };
+
+exports.deleteMyEps = (req, res) => {
+  const userId = req.params.user_id;
+  const toonId = req.params.toon_id;
+  const epsId = req.params.eps_id;
+
+  Toons.findAll({
+    where: { createdBy: userId, id: toonId }
+  }).then(data => {
+    Episodes.destroy({
+      where: { webtoonsId: toonId, id: epsId }
+    }).then(deleted => {
+      res.send({
+        Message: "delete succesfull"
+      });
+    });
+  });
+};
