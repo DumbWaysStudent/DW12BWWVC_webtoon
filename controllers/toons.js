@@ -40,24 +40,24 @@ const getFavorite = data => {
 };
 
 // get all toons by title
-// const getToonsByTitle = (data, title) => {
-//   const input = data.filter(item => {
-//     return item.title.toLowerCase().includes(title.toLowerCase());
-//   });
-//   let newData = input.map(item => {
-//     let newItem = {
-//       title: item.title,
-//       genre: item.genre,
-//       isFavorite: item.isFavorite,
-//       image: item.image,
-//       createdAt: item.createdAt,
-//       updatedAt: item.updatedAt,
-//       createdBy: item.createdBy.id
-//     };
-//     return newItem;
-//   });
-//   return newData;
-// };
+const getToonsByTitle = (data, title) => {
+  const input = data.filter(item => {
+    return item.title.toLowerCase().includes(title.toLowerCase());
+  });
+  let newData = input.map(item => {
+    let newItem = {
+      title: item.title,
+      genre: item.genre,
+      isFavorite: item.isFavorite,
+      image: item.image,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
+      createdBy: item.createdBy.id
+    };
+    return newItem;
+  });
+  return newData;
+};
 
 exports.show = (req, res) => {
   Toons.findAll({
