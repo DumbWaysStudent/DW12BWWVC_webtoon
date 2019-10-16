@@ -114,3 +114,47 @@ exports.detailEpisode = (req, res) => {
     res.send(data);
   });
 };
+
+exports.getCreatedToons = (req, res) => {
+  const user_id = req.params.user_id;
+
+  Toons.findAll({
+    where: { createdBy: user_id },
+    attributes: {
+      exclude: ["createdAt", "updatedAt"]
+    }
+  }).then(data => res.send(data));
+};
+
+exports.storeCreatedToons = (req, res) => {
+  const user_id = req.params.user_id;
+
+  Toons.create({
+    title: req.body.title,
+    genre: req.body.genre,
+    isFavorite: false,
+    image: req.body.image,
+    createdBy: user_id
+  }).then(data => res.send(data));
+};
+
+exports.showEpsCreatedUser = (req, res) => {
+  const userId = req.params.user_id;
+  const toonId = req.params.toon_id;
+
+  Episodes.findAll({
+    include: [
+      {
+        model: Toons,
+        as: "toonId",
+        where: { createdBy: userId, id: toonId },
+        attributes: {
+          exclude: ["id", "isFavorite", "image", "createdAt", "updatedAt"]
+        }
+      }
+    ],
+    attributes: { exclude: ["id", "webtoonsId"] }
+  }).then(data => {
+    res.send(data);
+  });
+};

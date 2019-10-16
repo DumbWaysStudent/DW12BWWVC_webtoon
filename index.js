@@ -26,12 +26,32 @@ app.group("/api/v1", router => {
   router.post("/login", AuthController.login);
 
   // other API goes here
-  router.get("/webtoons", ToonsControllers.show);
   router.get("/webtoon/:id", ToonsControllers.showid);
   router.get("/webtoon/:toon_id/episodes", ToonsControllers.episode);
-  router.get("/webtoon/:toon_id/episode/:eps_id", ToonsControllers.detailEpisode);
+  router.get(
+    "/webtoon/:toon_id/episode/:eps_id",
+    ToonsControllers.detailEpisode
+  );
 
-  // 
+  // Privates API
+  // Get Router
+  router.get("/webtoons", authenticated, ToonsControllers.show);
+  router.get(
+    "/user/:user_id/webtoons",
+    authenticated,
+    ToonsControllers.getCreatedToons
+  );
+  router.get(
+    "/user/:user_id/webtoon/:toon_id/episodes",
+    ToonsControllers.showEpsCreatedUser
+  );
+
+  // Post Router
+  router.post(
+    "/user/:user_id/webtoon",
+    authenticated,
+    ToonsControllers.storeCreatedToons
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port} !`));
