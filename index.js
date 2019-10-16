@@ -43,6 +43,7 @@ app.group("/api/v1", router => {
   );
   router.get(
     "/user/:user_id/webtoon/:toon_id/episodes",
+    authenticated,
     ToonsControllers.showEpsCreatedUser
   );
 
