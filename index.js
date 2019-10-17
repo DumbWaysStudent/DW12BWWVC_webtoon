@@ -95,6 +95,13 @@ app.group("/api/v1", router => {
     authenticated,
     ToonsControllers.deleteMyEps
   );
+
+  // create an images for a episode
+  router.post(
+    "/user/:user_id/webtoon/:toon_id/episode/:eps_id/image",
+    authenticated,
+    ToonsControllers.createImgEps
+  );
 });
 
 app.listen(port, () => console.log(`Listening on port ${port} !`));

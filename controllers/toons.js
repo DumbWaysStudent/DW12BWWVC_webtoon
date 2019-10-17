@@ -293,3 +293,41 @@ exports.deleteMyEps = (req, res) => {
     });
   });
 };
+
+exports.createImgEps = (req, res) => {
+  const userId = req.params.user_id;
+  const toonId = req.params.toon_id;
+  const epsId = req.params.eps_id;
+
+  Pages.findAll({
+    include: [
+      {
+        model: Episodes,
+        as: "myEpisode",
+        where: { webtoonsId: toonId, id: epsId },
+        attributes: [],
+        include: [
+          {
+            model: Toons,
+            as: "toonId",
+            where: { createdBy: userId, id: toonId }
+          }
+        ]
+      }
+    ]
+  }).then(items => {
+    if (items.length > 0 && req.body.episodesId == epsId) {
+      Pages.create({
+        episodesId: req.body.episodesId,
+        page: req.body.page,
+        image: req.body.image
+      }).then(data => {
+        res.send(data);
+      });
+    } else {
+      res.send({
+        Message: "Error request !!"
+      });
+    }
+  });
+};
