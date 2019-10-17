@@ -331,3 +331,39 @@ exports.createImgEps = (req, res) => {
     }
   });
 };
+
+exports.deleteImgEps = (req, res) => {
+  const userId = req.params.user_id;
+  const toonId = req.params.toon_id;
+  const epsId = req.params.eps_id;
+  const imgId = req.params.img_id;
+
+  Pages.findAll({
+    include: [
+      {
+        model: Episodes,
+        as: "myEpisode",
+        where: { webtoonsId: toonId, id: epsId },
+        attributes: [],
+        include: [
+          {
+            model: Toons,
+            as: "toonId",
+            where: { createdBy: userId, id: toonId },
+            attributes: []
+          }
+        ]
+      }
+    ]
+  }).then(items => {
+    if (items.length > 0) {
+      Pages.destroy({
+        where: { episodesId: epsId, id: imgId }
+      }).then(deleted => {
+        res.send({
+          Message: "Delete Succesfull !!"
+        });
+      });
+    }
+  });
+};
