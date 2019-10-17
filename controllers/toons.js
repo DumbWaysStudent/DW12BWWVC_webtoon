@@ -200,23 +200,22 @@ exports.createEpsToon = (req, res) => {
   const userId = req.params.user_id;
   const toonId = req.params.toon_id;
 
-  Episodes.findAll({
-    include: [
-      {
-        model: Toons,
-        as: "toonId",
-        where: { createdBy: userId, id: toonId },
-        attributes: []
-      }
-    ]
+  Toons.findAll({
+    where: { createdBy: userId, id: toonId }
   }).then(items => {
-    Episodes.create({
-      webtoonsId: toonId,
-      episode: req.body.episode,
-      image: req.body.image
-    }).then(data => {
-      res.send(data);
-    });
+    if (items.length > 0 && req.body.webtoonId == toonId) {
+      Episodes.create({
+        webtoonsId: req.body.webtoonId,
+        episode: req.body.episode,
+        image: req.body.image
+      }).then(data => {
+        res.send(data);
+      });
+    } else {
+      res.send({
+        Message: "Error Request !!"
+      });
+    }
   });
 };
 
@@ -255,8 +254,8 @@ exports.updateMyEps = (req, res) => {
 
   Toons.findAll({
     where: { createdBy: userId, id: toonId }
-  })
-    .then(data => {
+  }).then(data => {
+    if (data.length > 0) {
       Episodes.update(
         {
           episode: req.body.episode,
@@ -265,15 +264,18 @@ exports.updateMyEps = (req, res) => {
         {
           where: { webtoonsId: toonId, id: epsId }
         }
-      ).then(data => {
+      ).then(input => {
         res.send({
+          input,
           Message: "Update Succesfull !!"
         });
       });
-    })
-    .catch(err => {
-      console.log(err);
-    });
+    } else {
+      res.send({
+        Message: "Error Request !!"
+      });
+    }
+  });
 };
 
 exports.deleteMyEps = (req, res) => {
@@ -299,22 +301,16 @@ exports.createImgEps = (req, res) => {
   const toonId = req.params.toon_id;
   const epsId = req.params.eps_id;
 
-  Pages.findAll({
+  Episodes.findAll({
     include: [
       {
-        model: Episodes,
-        as: "myEpisode",
-        where: { webtoonsId: toonId, id: epsId },
-        attributes: [],
-        include: [
-          {
-            model: Toons,
-            as: "toonId",
-            where: { createdBy: userId, id: toonId }
-          }
-        ]
+        model: Toons,
+        as: "toonId",
+        where: { createdBy: userId, id: toonId },
+        attributes: []
       }
-    ]
+    ],
+    where: { webtoonsId: toonId, id: epsId }
   }).then(items => {
     if (items.length > 0 && req.body.episodesId == epsId) {
       Pages.create({
