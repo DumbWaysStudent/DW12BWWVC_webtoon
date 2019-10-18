@@ -13,12 +13,13 @@ exports.login = (req, res) => {
     if (authorization) {
       const token = jwt.sign({ id: user.id }, "my-secret-key");
       res.send({
-        login: "Succesfull",
+        id: user.id,
+        login: true,
         token
       });
     } else {
       res.send({
-        error: true,
+        login: false,
         message: "Wrong Email or Password Invalid !"
       });
     }
@@ -34,7 +35,9 @@ exports.register = (req, res) => {
     if (user) {
       const token = jwt.sign({ id: user.id }, "my-secret-key");
       res.send({
-        status: "true",
+        id: user.id,
+        email: user.email,
+        register: "Succesfull",
         token
       });
     }

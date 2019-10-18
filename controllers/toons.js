@@ -8,6 +8,7 @@ const Pages = models.pages;
 const getToons = data => {
   const newData = data.map(item => {
     let newItem = {
+      id: item.id,
       title: item.title,
       genre: item.genre,
       isFavorite: item.isFavorite,
@@ -86,8 +87,7 @@ exports.showid = (req, res) => {
 exports.episode = (req, res) => {
   const id = req.params.toon_id;
   Episodes.findAll({
-    where: { webtoonsId: id },
-    attributes: { exclude: ["id", "webtoonsId"] }
+    where: { webtoonsId: id }
   }).then(data => {
     res.send(data);
   });

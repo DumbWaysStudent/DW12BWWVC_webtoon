@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 const AuthController = require("./controllers/auth");
 const ToonsControllers = require("./controllers/toons");
 
-// midlewares
+// midlewares authentication
 const { authenticated } = require("./midleware");
 
 // group routes here
@@ -25,7 +25,8 @@ app.group("/api/v1", router => {
   router.post("/register", AuthController.register);
   router.post("/login", AuthController.login);
 
-  // other API goes here
+  // Public Api
+  router.get("/webtoons", ToonsControllers.show);
   router.get("/webtoon/:id", ToonsControllers.showid);
   router.get("/webtoon/:toon_id/episodes", ToonsControllers.episode);
   router.get(
@@ -33,21 +34,16 @@ app.group("/api/v1", router => {
     ToonsControllers.detailEpisode
   );
 
-  // Privates API
-  // Get Router
-  router.get("/webtoons", authenticated, ToonsControllers.show);
-  router.get(
-    "/user/:user_id/webtoons",
-    authenticated,
-    ToonsControllers.getCreatedToons
-  );
+  // Privates USERS.. API
+  // All Webtoons by user
+  router.get("/user/:user_id/webtoons", ToonsControllers.getCreatedToons);
   router.get(
     "/user/:user_id/webtoon/:toon_id/episodes",
     authenticated,
     ToonsControllers.showEpsCreatedUser
   );
 
-  // Post Router
+  // Created My Webtoon Creation
   router.post(
     "/user/:user_id/webtoon",
     authenticated,
